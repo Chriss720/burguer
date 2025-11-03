@@ -219,3 +219,80 @@
         .footer-nav a:hover {
             color: var(--brand-yellow);
         }
+
+/* --- ACCEDER STYLES --- */
+main.login-main {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 450px;
+    background-color: var(--card-bg);
+    padding: 3rem;
+    border-radius: 15px;
+    border: 2px solid var(--brand-yellow);
+    text-align: center;
+}
+
+.login-container h1 {
+    color: var(--brand-yellow);
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+}
+
+.login-form .input-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 1rem;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 5px;
+    color: var(--brand-white);
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--brand-red);
+    color: var(--brand-white);
+    font-weight: 700;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+}
+
+.submit-button:hover {
+    background-color: #a81f13;
+}
+
+.form-links {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.form-links a {
+    color: var(--brand-yellow);
+    text-decoration: none;
+}
