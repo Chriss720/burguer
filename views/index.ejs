@@ -21,44 +21,19 @@
 
         <section class="menu-section">
             <div class="card-container">
-                <!-- Card 1 -->
-                <article class="product-card">
-                    <img src="images/clasica.png" alt="Hamburguesa Clásica">
-                    <div class="card-content">
-                        <h3>La Clásica</h3>
-                        <p>Carne de res premium, queso cheddar, lechuga, tomate y nuestra salsa secreta. Un clásico que nunca falla.</p>
-                        <div class="card-footer">
-                            <span class="price">$120.00</span>
-                            <a href="#" class="order-button">Ordenar</a>
+                <% products.forEach(product => { %>
+                    <article class="product-card">
+                        <img src="<%= product.foto %>" alt="Foto de <%= product.nombre_producto %>">
+                        <div class="card-content">
+                            <h3><%= product.nombre_producto %></h3>
+                            <p><%= product.descripcion %></p>
+                            <div class="card-footer">
+                                <span class="price">$<%= product.precio.toFixed(2) %></span>
+                                <a href="#" class="order-button">Ordenar</a>
+                            </div>
                         </div>
-                    </div>
-                </article>
-
-                <!-- Card 2 -->
-                <article class="product-card">
-                    <img src="images/westernBBQ.png" alt="Hamburguesa BBQ">
-                    <div class="card-content">
-                        <h3>Western BBQ</h3>
-                        <p>Carne de res, aros de cebolla crujientes, tocino ahumado, queso suizo y salsa BBQ picosita.</p>
-                        <div class="card-footer">
-                            <span class="price">$150.00</span>
-                            <a href="#" class="order-button">Ordenar</a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Card 3 -->
-                <article class="product-card">
-                    <img src="images/polloCrispy.png" alt="Hamburguesa de Pollo">
-                    <div class="card-content">
-                        <h3>Pollo Crispy</h3>
-                        <p>Pechuga de pollo empanizada, lechuga fresca, mayonesa y un toque de limón. Ligera pero llena de sabor.</p>
-                        <div class="card-footer">
-                            <span class="price">$110.00</span>
-                            <a href="#" class="order-button">Ordenar</a>
-                        </div>
-                    </div>
-                </article>
+                    </article>
+                <% }); %>
             </div>
         </section>
     </main>
