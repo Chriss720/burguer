@@ -18,8 +18,8 @@ export class ProductService {
     return await this.productRepository.save(product);
   }
 
-  async findAll(): Promise<Product[]> {
-    return this.productRepository.find();
+  async findAll(): Promise<[Product[], number]> {
+    return this.productRepository.findAndCount();
   }
 
   async findOne(id: number): Promise<Product> {
@@ -28,8 +28,19 @@ export class ProductService {
     return product;
   }
 
-  async findAvailable(): Promise<Product[]> {
+  async findAvailable(page = 1, limit = 10): Promise<[Product[], number]> {
+    const truths = ['disponible', 'available', 'true', '1', 'si', 'sí', 'yes'];
+    const skip = (page - 1) * limit;
 
+    return this.productRepository
+      .createQueryBuilder('product')
+      .where('LOWER(product.disponibilidad) IN (:...vals)', { vals: truths })
+      .skip(skip)
+      .take(limit)
+      .getManyAndCount();
+  }
+
+  async findAllAvailable(): Promise<Product[]> {
     const truths = ['disponible', 'available', 'true', '1', 'si', 'sí', 'yes'];
     return this.productRepository
       .createQueryBuilder('product')

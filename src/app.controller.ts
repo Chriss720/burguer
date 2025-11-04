@@ -8,8 +8,15 @@ export class AppController {
   @Get()
   @Render('index')
   async root() {
-    const products = await this.productService.findAvailable();
-    return { products };
+    const [allProducts, totalCount] = await this.productService.findAvailable();
+    const products = allProducts.slice(0, 5);
+    const showMoreButton = totalCount > 5;
+    return { products, showMoreButton };
+  }
+
+  @Get('all-products')
+  async getAllProducts() {
+    return this.productService.findAllAvailable();
   }
 
   @Get('acceder')

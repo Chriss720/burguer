@@ -296,3 +296,26 @@ main.login-main {
     color: var(--brand-yellow);
     text-decoration: none;
 }
+
+/* --- SHOW MORE BUTTON --- */
+.show-more-container {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.show-more-button {
+    background-color: var(--brand-red);
+    color: var(--brand-white);
+    text-decoration: none;
+    padding: 0.8rem 2.5rem;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.show-more-button:hover {
+    background-color: #a81f13;
+}
