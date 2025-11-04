@@ -61,7 +61,7 @@
         estado_cliente: "activo"
       };
 
-      console.log("📤 Enviando JSON:", data);
+      console.log(" Enviando JSON:", data);
 
       try {
         const response = await fetch("http://localhost:3000/customer", {
@@ -73,7 +73,7 @@
         });
 
         if (response.ok) {
-          mensaje.textContent = "✅ Registro exitoso. ¡Bienvenido!";
+          mensaje.textContent = " Registro exitoso. ¡Bienvenido!";
           mensaje.classList.add("exito");
           document.getElementById('registroForm').reset();
         } else {
@@ -84,7 +84,7 @@
         }
       } catch (error) {
         console.error("Error de conexión:", error);
-        mensaje.textContent = "⚠️ No se pudo conectar con el servidor.";
+        mensaje.textContent = " No se pudo conectar con el servidor.";
         mensaje.classList.add("error");
       }
     });
