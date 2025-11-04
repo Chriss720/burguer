@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
 
@@ -84,6 +84,53 @@
             }
         });
     </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const usuarioData = localStorage.getItem('clienteActual');
+  const nombreSpan = document.getElementById('usuario-nombre');
+  const userLink = document.getElementById('usuario-link');
+  const menu = document.getElementById('user-menu');
+  const menuNombre = document.getElementById('menu-nombre');
+  const menuCorreo = document.getElementById('menu-correo');
+  const cerrarBtn = document.getElementById('cerrar-sesion');
+
+  if (usuarioData) {
+  const data = JSON.parse(usuarioData);
+  const user = data.cliente || data;
+
+  const nombre = user.nombre || "Usuario";
+  const apellido = user.apellido || "";
+  const correo = user.email || "Correo no disponible";
+
+  nombreSpan.textContent = nombre;
+  menuNombre.textContent = `${nombre} ${apellido}`.trim();
+  menuCorreo.textContent = correo;
+
+  // Mostrar menú
+  userLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    menu.classList.toggle('hidden');
+  });
+
+  // Cerrar sesión
+  cerrarBtn.addEventListener('click', () => {
+    localStorage.removeItem('clienteActual');
+    location.reload();
+  });
+
+  // Cerrar si hace clic fuera
+  document.addEventListener('click', (e) => {
+    if (!menu.contains(e.target) && !userLink.contains(e.target)) {
+      menu.classList.add('hidden');
+    }
+  });
+} else {
+    nombreSpan.textContent = "Acceder";
+    userLink.setAttribute('href', '/acceder');
+  }
+});
+</script>
 
 </body>
 </html>

@@ -24,4 +24,10 @@ export class AppController {
   acceder() {
     return {};
   }
+
+  @Get('registro')
+  @Render('registro')
+  registro() {
+    return {};
+  }
 }
