@@ -14,9 +14,15 @@
     <%- include('partials/header') %>
 
     <main>
-        <section class="hero">
-            <h1>LA HAMBURGUESA TE LLAMA</h1>
-            <p>Hechas a la parrilla, con ingredientes frescos y un sabor que te transporta a otro nivel.</p>
+        <section class="hero hero-two-columns">
+            <div class="hero-content">
+                <h1>¿Listo para tu próxima Burger?</h1>
+                <p>Hechas a la parrilla, con ingredientes frescos y un sabor que te transporta a otro nivel.</p>
+                <a href="/menu" class="cta-button">Ver Menú</a>
+            </div>
+            <div class="hero-image">
+                <img src="/static/images/tiburon.png" alt="Hamburguesa Tiburón">
+            </div>
         </section>
 
         <section class="menu-section">
@@ -40,6 +46,25 @@
                 <button id="show-more-button" class="show-more-button">Mostrar menú completo</button>
             </div>
             <% } %>
+        </section>
+
+        <section class="about-us-section">
+            <h2>Nuestra Historia</h2>
+            <p>En Me Lleva la Burger, nos apasiona crear las hamburguesas más deliciosas y jugosas. Desde nuestros inicios, nos hemos comprometido a usar solo los ingredientes más frescos y de la más alta calidad, cocinados a la perfección en nuestra parrilla. ¡Ven y descubre por qué somos la mejor opción para tu antojo de burger!</p>
+        </section>
+
+
+
+        <section class="testimonials-section">
+            <h2>Lo que Dicen Nuestros Clientes</h2>
+            <div class="testimonial-card">
+                <p>"¡La mejor hamburguesa que he probado en mi vida! El sabor ahumado es increíble y la carne siempre está en su punto."</p>
+                <span>— Juan Pérez</span>
+            </div>
+            <div class="testimonial-card">
+                <p>"Siempre pido aquí cuando quiero una buena burger. La entrega es rápida y la calidad nunca decepciona."</p>
+                <span>— María García</span>
+            </div>
         </section>
     </main>
 
