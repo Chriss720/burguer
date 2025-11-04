@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro de Cliente - Me Lleva la Burger</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+
+  <main class="registro-main">
+    <form id="registroForm">
+      <h2>Crear Cuenta</h2>
+
+      <label for="nombre_cliente">Nombre</label>
+      <input type="text" id="nombre_cliente" name="nombre_cliente" required>
+
+      <label for="apellido_cliente">Apellido</label>
+      <input type="text" id="apellido_cliente" name="apellido_cliente" required>
+
+      <label for="correo_cliente">Correo</label>
+      <input type="email" id="correo_cliente" name="correo_cliente" required>
+
+      <label for="contrasena_cliente">Contraseña</label>
+      <input type="password" id="contrasena_cliente" name="contrasena_cliente" required>
+
+      <label for="telefono_cliente">Teléfono</label>
+      <input type="tel" id="telefono_cliente" name="telefono_cliente" 
+             pattern="[0-9+ ]{10,20}" placeholder="Ej. +52 1 33 2287 2144" required>
+
+      <label for="direccion">Dirección</label>
+      <input type="text" id="direccion" name="direccion" required>
+
+      <input type="submit" value="Registrarse">
+      <div class="mensaje" id="mensaje"></div>
+    </form>
+  </main>
+
+  <%- include('partials/footer') %>
+
+  <script>
+    document.getElementById('registroForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const mensaje = document.getElementById('mensaje');
+      mensaje.textContent = "";
+      mensaje.className = "mensaje";
+
+      const data = {
+        nombre_cliente: document.getElementById('nombre_cliente').value.trim(),
+        apellido_cliente: document.getElementById('apellido_cliente').value.trim(),
+        correo_cliente: document.getElementById('correo_cliente').value.trim(),
+        contrasena_cliente: document.getElementById('contrasena_cliente').value.trim(),
+        telefono_cliente: document.getElementById('telefono_cliente').value.trim(),
+        direccion: document.getElementById('direccion').value.trim(),
+        estado_cliente: "activo"
+      };
+
+      console.log(" Enviando JSON:", data);
+
+      try {
+        const response = await fetch("http://localhost:3000/customer", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          mensaje.textContent = " Registro exitoso. ¡Bienvenido!";
+          mensaje.classList.add("exito");
+          document.getElementById('registroForm').reset();
+        } else {
+          const error = await response.json();
+          mensaje.textContent = `❌ Error al registrar: ${error.message || 'Intenta nuevamente.'}`;
+          mensaje.classList.add("error");
+          console.error("Error del backend:", error);
+        }
+      } catch (error) {
+        console.error("Error de conexión:", error);
+        mensaje.textContent = " No se pudo conectar con el servidor.";
+        mensaje.classList.add("error");
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -24,17 +24,27 @@ export class ProductController {
     summary: 'Obtener todos los productos',
     description: 'Devuelve una lista completa de todos los productos registrados en el catálogo, sin importar su disponibilidad.'
   })
-  findAll() {
-    return this.productService.findAll();
+  async findAll() {
+    const [products, total] = await this.productService.findAll();
+    return {
+      data: products,
+      total: total,
+    };
   }
 
   @Get('available')
   @ApiOperation({ 
-    summary: 'Obtener productos disponibles',
-    description: 'Devuelve una lista de los productos que están actualmente disponibles para la venta (en stock).'
+    summary: 'Obtener productos disponibles con paginación',
+    description: 'Devuelve una lista paginada de productos que están actualmente disponibles. Use los parámetros `page` y `limit` para navegar entre los resultados.'
   })
-  findAvailable() {
-    return this.productService.findAvailable();
+  async findAvailable(@Query('page') page = 1, @Query('limit') limit = 10) {
+    const [products, total] = await this.productService.findAvailable(+page, +limit);
+    return {
+      data: products,
+      total: total,
+      page: +page,
+      limit: +limit,
+    };
   }
 
   @Get(':id')

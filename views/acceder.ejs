@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceder - Me Lleva la Burger</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+    <%- include('partials/header') %>
+
+    <main class="login-main">
+    <div class="login-container">
+      <h1>INICIA SESIÓN</h1>
+      <form class="login-form">
+        <div class="input-group">
+          <label for="email">Correo Electrónico</label>
+          <input type="email" id="email" name="email" required />
+        </div>
+        <div class="input-group">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" name="password" required />
+        </div>
+        <button type="submit" class="submit-button">Entrar</button>
+
+        <!-- 🔻 Mensaje de error tipo Steam -->
+        <p class="error-message" id="error-msg">
+          Comprueba tu contraseña y nombre de cuenta e inténtalo de nuevo.
+        </p>
+      </form>
+
+      <div class="form-links">
+        <p><a href="#">¿Olvidaste tu contraseña?</a></p>
+        <p>¿No tienes cuenta? <a href="/registro">Regístrate aquí</a></p>
+      </div>
+    </div>
+  </main>
+
+    <%- include('partials/footer') %>
+
+  <script>
+    const form = document.querySelector('.login-form');
+    const errorMsg = document.getElementById('error-msg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!email || !password) {
+        errorMsg.style.display = 'block';
+        errorMsg.textContent = '⚠️ Por favor, completa todos los campos.';
+        return;
+      }
+
+      try {
+        const res = await fetch('http://localhost:3000/auth/login/customer', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            correo_cliente: email,
+            contrasena_cliente: password,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          errorMsg.style.display = 'block';
+          errorMsg.textContent =
+            ' Comprueba tu contraseña y nombre de cuenta e inténtalo de nuevo.';
+          return;
+        }
+
+        // Guardar datos y redirigir
+        localStorage.setItem('token', data.access_token);
+        localStorage.setItem('clienteActual', JSON.stringify(data.user));
+        window.location.href = '/';
+      } catch (error) {
+        errorMsg.style.display = 'block';
+        errorMsg.textContent =
+          ' No se pudo conectar con el servidor. Inténtalo más tarde.';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Me Lleva la Burger - Estilo Carl's Jr.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+    <%- include('partials/header') %>
+
+    <main>
+        <section class="hero hero-two-columns">
+            <div class="hero-content">
+                <h1>¿Listo para tu próxima Burger?</h1>
+                <p>Hechas a la parrilla, con ingredientes frescos y un sabor que te transporta a otro nivel.</p>
+                
+            </div>
+            <div class="hero-image">
+                <img src="/static/images/tiburon.png" alt="Hamburguesa Tiburón">
+            </div>
+        </section>
+
+        <section class="menu-section">
+            <div class="card-container" id="product-container">
+                <% products.forEach(product => { %>
+                    <article class="product-card">
+                        <img src="<%= product.foto %>" alt="Foto de <%= product.nombre_producto %>">
+                        <div class="card-content">
+                            <h3><%= product.nombre_producto %></h3>
+                            <p><%= product.descripcion %></p>
+                            <div class="card-footer">
+                                <span class="price">$<%= product.precio.toFixed(2) %></span>
+                                <a href="#" class="order-button">Ordenar</a>
+                            </div>
+                        </div>
+                    </article>
+                <% }); %>
+            </div>
+            <% if (showMoreButton) { %>
+            <div class="show-more-container" id="show-more-container">
+                <button id="show-more-button" class="show-more-button">Mostrar menú completo</button>
+            </div>
+            <% } %>
+        </section>
+
+        <section class="about-us-section">
+            <h2>Nuestra Historia</h2>
+            <p>En Me Lleva la Burger, nos apasiona crear las hamburguesas más deliciosas y jugosas. Desde nuestros inicios, nos hemos comprometido a usar solo los ingredientes más frescos y de la más alta calidad, cocinados a la perfección en nuestra parrilla. ¡Ven y descubre por qué somos la mejor opción para tu antojo de burger!</p>
+        </section>
+
+
+
+        <section class="testimonials-section">
+            <h2>Lo que Dicen Nuestros Clientes</h2>
+            <div class="testimonial-card">
+                <p>"¡La mejor hamburguesa que he probado en mi vida! El sabor ahumado es increíble y la carne siempre está en su punto."</p>
+                <span>— Juan Pérez</span>
+            </div>
+            <div class="testimonial-card">
+                <p>"Siempre pido aquí cuando quiero una buena burger. La entrega es rápida y la calidad nunca decepciona."</p>
+                <span>— María García</span>
+            </div>
+        </section>
+    </main>
+
+    <%- include('partials/footer') %>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const showMoreButton = document.getElementById('show-more-button');
+            const productContainer = document.getElementById('product-container');
+            const showMoreContainer = document.getElementById('show-more-container');
+
+            if (showMoreButton) {
+                showMoreButton.addEventListener('click', async () => {
+                    try {
+                        const response = await fetch('/all-products');
+                        const products = await response.json();
+                        
+                        let productsHTML = '';
+                        products.forEach(product => {
+                            productsHTML += `
+                                <article class="product-card">
+                                    <img src="${product.foto}" alt="Foto de ${product.nombre_producto}">
+                                    <div class="card-content">
+                                        <h3>${product.nombre_producto}</h3>
+                                        <p>${product.descripcion}</p>
+                                        <div class="card-footer">
+                                            <span class="price">$${product.precio.toFixed(2)}</span>
+                                            <a href="#" class="order-button">Ordenar</a>
+                                        </div>
+                                    </div>
+                                </article>
+                            `;
+                        });
+
+                        productContainer.innerHTML = productsHTML;
+                        showMoreContainer.style.display = 'none';
+
+                    } catch (error) {
+                        console.error('Error fetching full menu:', error);
+                    }
+                });
+            }
+        });
+    </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const usuarioData = localStorage.getItem('clienteActual');
+  const nombreSpan = document.getElementById('usuario-nombre');
+  const userLink = document.getElementById('usuario-link');
+  const menu = document.getElementById('user-menu');
+  const menuNombre = document.getElementById('menu-nombre');
+  const menuCorreo = document.getElementById('menu-correo');
+  const cerrarBtn = document.getElementById('cerrar-sesion');
+
+  if (usuarioData) {
+  const data = JSON.parse(usuarioData);
+  const user = data.cliente || data;
+
+  const nombre = user.nombre || "Usuario";
+  const apellido = user.apellido || "";
+  const correo = user.email || "Correo no disponible";
+
+  nombreSpan.textContent = nombre;
+  menuNombre.textContent = `${nombre} ${apellido}`.trim();
+  menuCorreo.textContent = correo;
+
+  // Mostrar menú
+  userLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    menu.classList.toggle('hidden');
+  });
+
+  // Cerrar sesión
+  cerrarBtn.addEventListener('click', () => {
+    localStorage.removeItem('clienteActual');
+    location.reload();
+  });
+
+  // Cerrar si hace clic fuera
+  document.addEventListener('click', (e) => {
+    if (!menu.contains(e.target) && !userLink.contains(e.target)) {
+      menu.classList.add('hidden');
+    }
+  });
+} else {
+    nombreSpan.textContent = "Acceder";
+    userLink.setAttribute('href', '/acceder');
+  }
+});
+</script>
+
+</body>
+</html>
