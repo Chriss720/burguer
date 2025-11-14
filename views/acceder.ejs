@@ -7,38 +7,36 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/styles.css">
+    <style> .font-oswald { font-family: 'Oswald', sans-serif; } </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body>
 
     <%- include('partials/header') %>
 
-    <main class="login-main">
-    <div class="login-container">
-      <h1>INICIA SESIÓN</h1>
-      <form class="login-form">
-        <div class="input-group">
-          <label for="email">Correo Electrónico</label>
-          <input type="email" id="email" name="email" required />
-        </div>
-        <div class="input-group">
-          <label for="password">Contraseña</label>
-          <input type="password" id="password" name="password" required />
-        </div>
-        <button type="submit" class="submit-button">Entrar</button>
+    <main class="min-h-screen flex items-center justify-center bg-black text-white font-oswald p-8">
+      <div class="w-full max-w-md bg-[#1a1a1a] p-8 rounded-xl border-2 border-[#FFC72C] text-center">
+        <h1 class="text-2xl text-[#FFC72C] font-extrabold mb-6 uppercase">INICIA SESIÓN</h1>
+        <form class="space-y-4 login-form">
+          <div>
+            <label for="email" class="block text-left mb-1">Correo Electrónico</label>
+            <input type="email" id="email" name="email" required class="w-full p-3 bg-[#333] border border-[#555] rounded-md text-white" />
+          </div>
+          <div>
+            <label for="password" class="block text-left mb-1">Contraseña</label>
+            <input type="password" id="password" name="password" required class="w-full p-3 bg-[#333] border border-[#555] rounded-md text-white" />
+          </div>
+          <button type="submit" class="w-full p-3 bg-[#DA291C] text-white font-extrabold rounded-full uppercase hover:bg-[#a81f13]">Entrar</button>
 
-        <!-- 🔻 Mensaje de error tipo Steam -->
-        <p class="error-message" id="error-msg">
-          Comprueba tu contraseña y nombre de cuenta e inténtalo de nuevo.
-        </p>
-      </form>
+          <p class="hidden text-red-400" id="error-msg">Comprueba tu contraseña y nombre de cuenta e inténtalo de nuevo.</p>
+        </form>
 
-      <div class="form-links">
-        <p><a href="#">¿Olvidaste tu contraseña?</a></p>
-        <p>¿No tienes cuenta? <a href="/registro">Regístrate aquí</a></p>
+        <div class="mt-4 text-sm text-gray-300">
+          <p><a href="#" class="text-[#FFC72C]">¿Olvidaste tu contraseña?</a></p>
+          <p class="mt-2">¿No tienes cuenta? <a href="/registro" class="text-[#FFC72C]">Regístrate aquí</a></p>
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
 
     <%- include('partials/footer') %>
 

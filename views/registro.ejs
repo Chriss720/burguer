@@ -8,36 +8,51 @@
     href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="/static/css/styles.css">
+  <style> .font-oswald { font-family: 'Oswald', sans-serif; } </style>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body>
   <%- include('partials/header') %>
 
-  <main class="registro-main">
-    <form id="registroForm">
-      <h2>Crear Cuenta</h2>
+  <main class="min-h-screen flex items-center justify-center bg-black text-white font-oswald p-8">
+    <form id="registroForm" class="w-full max-w-lg bg-[#1a1a1a] p-8 rounded-xl border-2 border-[#FFC72C] space-y-4">
+      <h2 class="text-2xl text-[#FFC72C] font-extrabold">Crear Cuenta</h2>
 
-      <label for="nombre_cliente">Nombre</label>
-      <input type="text" id="nombre_cliente" name="nombre_cliente" required>
+      <div>
+        <label for="nombre_cliente" class="block mb-1">Nombre</label>
+        <input type="text" id="nombre_cliente" name="nombre_cliente" required class="w-full p-3 bg-[#333] border border-[#555] rounded-md text-white">
+      </div>
 
-      <label for="apellido_cliente">Apellido</label>
-      <input type="text" id="apellido_cliente" name="apellido_cliente" required>
+      <div>
+        <label for="apellido_cliente" class="block mb-1">Apellido</label>
+        <input type="text" id="apellido_cliente" name="apellido_cliente" required class="w-full p-3 bg-[#333] border border-[#555] rounded-md text-white">
+      </div>
 
-      <label for="correo_cliente">Correo</label>
-      <input type="email" id="correo_cliente" name="correo_cliente" required>
+      <div>
+        <label for="correo_cliente" class="block mb-1">Correo</label>
+        <input type="email" id="correo_cliente" name="correo_cliente" required class="w-full p-3 bg-[#333] border border-[#555] rounded-md text-white">
+      </div>
 
-      <label for="contrasena_cliente">Contraseña</label>
-      <input type="password" id="contrasena_cliente" name="contrasena_cliente" required>
+      <div>
+        <label for="contrasena_cliente" class="block mb-1">Contraseña</label>
+        <input type="password" id="contrasena_cliente" name="contrasena_cliente" required class="w-full p-3 bg-[#333] border border-[#555] rounded-md text-white">
+      </div>
 
-      <label for="telefono_cliente">Teléfono</label>
-      <input type="tel" id="telefono_cliente" name="telefono_cliente" 
-             pattern="[0-9+ ]{10,20}" placeholder="Ej. +52 1 33 2287 2144" required>
+      <div>
+        <label for="telefono_cliente" class="block mb-1">Teléfono</label>
+        <input type="tel" id="telefono_cliente" name="telefono_cliente" pattern="[0-9+ ]{10,20}" placeholder="Ej. +52 1 33 2287 2144" required class="w-full p-3 bg-[#333] border border-[#555] rounded-md text-white">
+      </div>
 
-      <label for="direccion">Dirección</label>
-      <input type="text" id="direccion" name="direccion" required>
+      <div>
+        <label for="direccion" class="block mb-1">Dirección</label>
+        <input type="text" id="direccion" name="direccion" required class="w-full p-3 bg-[#333] border border-[#555] rounded-md text-white">
+      </div>
 
-      <input type="submit" value="Registrarse">
-      <div class="mensaje" id="mensaje"></div>
+      <div>
+        <button type="submit" class="w-full p-3 bg-[#FFC72C] text-black font-bold rounded-full">Registrarse</button>
+      </div>
+
+      <div id="mensaje" class="text-sm"></div>
     </form>
   </main>
 
