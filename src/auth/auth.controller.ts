@@ -5,6 +5,7 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginCustomerDto } from './dto/login-customer.dto';
 import { LoginEmployeeDto } from './dto/login-employee.dto';
+import { LoginDto } from './dto/login.dto';
 import { LoginResponse } from '../types';
 
 @ApiTags('Autenticación')
@@ -22,6 +23,18 @@ export class AuthController {
     @ApiResponse({ status: 401, description: 'Credenciales inválidas. El correo electrónico o la contraseña son incorrectos.' })
     loginCustomer(@Body() loginDto: LoginCustomerDto): Promise<LoginResponse> {
         return this.authService.loginCustomer(loginDto);
+    }
+
+    @UseInterceptors(LoggingInterceptor)
+    @Post('login')
+    @ApiOperation({ 
+        summary: 'Iniciar sesión unificado',
+        description: 'Permite a un cliente o empleado iniciar sesión. Diferencia automáticamente el tipo de usuario.'
+    })
+    @ApiResponse({ status: 200, description: 'Inicio de sesión exitoso. Devuelve un token de acceso.' })
+    @ApiResponse({ status: 401, description: 'Credenciales inválidas.' })
+    login(@Body() loginDto: LoginDto): Promise<LoginResponse> {
+        return this.authService.login(loginDto);
     }
 
     @UseInterceptors(LoggingInterceptor)

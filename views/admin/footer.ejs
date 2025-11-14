@@ -1,0 +1,16 @@
+    </main>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const logoutBtn = document.getElementById('logout-admin');
+  
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('clienteActual');
+      window.location.href = '/acceder';
+    });
+  }
+});
+</script>

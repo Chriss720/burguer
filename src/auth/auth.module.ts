@@ -14,7 +14,7 @@ import { Employee } from '../employee/entities/employee.entity';
         TypeOrmModule.forFeature([Customer, Employee]),
         PassportModule,
         JwtModule.register({
-            secret: 'SECRET_KEY_123',
+            secret: 'Me_lleva_la_burguer_no_se_que_poner_mondongo_123',
             signOptions: { expiresIn: '24h' },
         }),
     ],

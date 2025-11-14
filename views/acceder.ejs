@@ -57,12 +57,12 @@
       }
 
       try {
-        const res = await fetch('http://localhost:3000/auth/login/customer', {
+        const res = await fetch('http://localhost:3000/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            correo_cliente: email,
-            contrasena_cliente: password,
+            email: email,
+            contrasena: password,
           }),
         });
 
@@ -71,18 +71,27 @@
         if (!res.ok) {
           errorMsg.style.display = 'block';
           errorMsg.textContent =
-            ' Comprueba tu contraseña y nombre de cuenta e inténtalo de nuevo.';
+            '❌ Comprueba tu contraseña y nombre de cuenta e inténtalo de nuevo.';
           return;
         }
 
-        // Guardar datos y redirigir
+        // Guardar token en localStorage Y en cookie para que se envíe automáticamente
         localStorage.setItem('token', data.access_token);
         localStorage.setItem('clienteActual', JSON.stringify(data.user));
-        window.location.href = '/';
+        
+        // Guardar en cookie para que se envíe en todas las peticiones
+        document.cookie = `Authorization=Bearer ${data.access_token}; path=/; max-age=86400`;
+
+        if (data.user.tipo === 'employee') {
+          window.location.href = '/admin/dashboard';
+        } else {
+          window.location.href = '/';
+        }
       } catch (error) {
+        console.error('Error:', error);
         errorMsg.style.display = 'block';
         errorMsg.textContent =
-          ' No se pudo conectar con el servidor. Inténtalo más tarde.';
+          '⚠️ No se pudo conectar con el servidor. Inténtalo más tarde.';
       }
     });
   </script>

@@ -7,6 +7,7 @@ import { OrderModule } from './order/order.module';
 import { PaymentModule } from './payment/payment.module';
 import { CartModule } from './cart/cart.module';
 import { AuthModule } from './auth/auth.module';
+import { AdminModule } from './admin/admin.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
@@ -29,7 +30,7 @@ import { AppController } from './app.controller';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    CustomerModule, EmployeeModule, ProductModule, OrderModule, PaymentModule, CartModule, AuthModule],
+    CustomerModule, EmployeeModule, ProductModule, OrderModule, PaymentModule, CartModule, AuthModule, AdminModule],
   controllers: [AppController],
   providers: [],
 })
