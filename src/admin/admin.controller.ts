@@ -36,4 +36,10 @@ export class AdminController {
     async getIngredientes(@GetUser() user: AuthUser, @Res() res: Response) {
         res.render('admin/ingredientes', { user });
     }
+
+    @Get('empleados')
+    async getEmpleados(@GetUser() user: AuthUser, @Res() res: Response) {
+        // Vista simple con título; el resto lo implementará otro compañero
+        res.render('admin/empleados', { user });
+    }
 }

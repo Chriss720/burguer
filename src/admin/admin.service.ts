@@ -16,7 +16,7 @@ export class AdminService {
 
     async getOrders() {
         return this.orderRepository.find({
-            relations: ['cliente', 'productos'],
+            relations: ['customer', 'employee', 'orderProducts', 'payment'],
             order: { id_pedido: 'DESC' }
         });
     }
