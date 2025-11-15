@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+    <style> .font-oswald { font-family: 'Oswald', sans-serif; } </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-black text-white">
+
+<%- include('./header') %>
+
+        <div class="p-8">
+            <h2 class="text-4xl font-extrabold text-[#FFC72C] mb-8">Dashboard</h2>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-[#1a1a1a] p-6 rounded-lg border-2 border-[#FFC72C]">
+                    <p class="text-gray-400 text-sm">Total de Pedidos</p>
+                    <p class="text-3xl font-extrabold text-[#FFC72C]"><%= stats.totalOrders %></p>
+                </div>
+                <div class="bg-[#1a1a1a] p-6 rounded-lg border-2 border-[#FFC72C]">
+                    <p class="text-gray-400 text-sm">Pedidos Pendientes</p>
+                    <p class="text-3xl font-extrabold text-[#DA291C]"><%= stats.pendingOrders %></p>
+                </div>
+                <div class="bg-[#1a1a1a] p-6 rounded-lg border-2 border-[#FFC72C]">
+                    <p class="text-gray-400 text-sm">Productos en Menú</p>
+                    <p class="text-3xl font-extrabold text-[#FFC72C]"><%= stats.totalProducts %></p>
+                </div>
+            </div>
+
+            <div class="bg-[#1a1a1a] p-6 rounded-lg border-2 border-[#FFC72C]">
+                <h3 class="text-2xl font-bold text-[#FFC72C] mb-4">Accesos Rápidos</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <a href="/admin/pedidos" class="bg-[#DA291C] text-white p-4 rounded-lg font-bold text-center hover:bg-[#a81f13]">Ver Pedidos</a>
+                    <a href="/admin/menu" class="bg-[#FFC72C] text-black p-4 rounded-lg font-bold text-center hover:bg-[#FFB700]">Gestionar Menú</a>
+                </div>
+            </div>
+        </div>
+
+<%- include('./footer') %>
+
+</body>
+</html>

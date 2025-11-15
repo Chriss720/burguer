@@ -7,43 +7,45 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/styles.css">
+    <style> .font-oswald { font-family: 'Oswald', sans-serif; } </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body>
 
     <%- include('partials/header') %>
 
-    <main>
-        <section class="hero hero-two-columns">
-            <div class="hero-content">
-                <h1>¿Listo para tu próxima Burger?</h1>
-                <p>Hechas a la parrilla, con ingredientes frescos y un sabor que te transporta a otro nivel.</p>
-                
-            </div>
-            <div class="hero-image">
-                <img src="/static/images/tiburon.png" alt="Hamburguesa Tiburón">
+    <main class="bg-black text-white font-oswald">
+        <section class="py-16 px-8 bg-black text-white">
+            <div class="flex flex-col md:flex-row items-center gap-12 max-w-6xl mx-auto">
+                <div class="flex-1 text-center md:text-left">
+                    <h1 class="text-4xl md:text-5xl uppercase text-[#FFC72C] leading-tight mb-4">¿Listo para tu próxima Burger?</h1>
+                    <p class="text-lg max-w-xl mx-auto md:mx-0 mb-8">Hechas a la parrilla, con ingredientes frescos y un sabor que te transporta a otro nivel.</p>
+                </div>
+                <div class="flex-1 flex justify-center items-center">
+                    <img src="/static/images/tiburon.png" alt="Hamburguesa Tiburón" class="max-w-full h-auto rounded-xl shadow-[0_0_30px_15px_rgba(0,0,0,0.7)]">
+                </div>
             </div>
         </section>
 
-        <section class="menu-section">
-            <div class="card-container" id="product-container">
+        <section class="py-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto" id="product-container">
                 <% products.forEach(product => { %>
-                    <article class="product-card">
-                        <img src="<%= product.foto %>" alt="Foto de <%= product.nombre_producto %>">
-                        <div class="card-content">
-                            <h3><%= product.nombre_producto %></h3>
-                            <p><%= product.descripcion %></p>
-                            <div class="card-footer">
-                                <span class="price">$<%= product.precio.toFixed(2) %></span>
-                                <a href="#" class="order-button">Ordenar</a>
+                    <article class="bg-[#1a1a1a] rounded-xl overflow-hidden border-2 border-transparent hover:-translate-y-2 hover:border-[#FFC72C] transition transform flex flex-col">
+                        <img src="<%= product.foto %>" alt="Foto de <%= product.nombre_producto %>" class="w-full h-64 object-cover">
+                        <div class="p-6 flex-1 flex flex-col">
+                            <h3 class="text-2xl text-[#FFC72C] mb-2"><%= product.nombre_producto %></h3>
+                            <p class="text-base leading-relaxed flex-1 mb-4"><%= product.descripcion %></p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xl font-extrabold text-white">$<%= product.precio.toFixed(2) %></span>
+                                <a href="#" class="bg-[#DA291C] text-white px-4 py-2 rounded-full font-extrabold hover:bg-[#a81f13]">Ordenar</a>
                             </div>
                         </div>
                     </article>
                 <% }); %>
             </div>
             <% if (showMoreButton) { %>
-            <div class="show-more-container" id="show-more-container">
-                <button id="show-more-button" class="show-more-button">Mostrar menú completo</button>
+            <div class="flex justify-center mt-6" id="show-more-container">
+                <button id="show-more-button" class="bg-[#FFC72C] text-black px-6 py-2 rounded-full font-bold">Mostrar menú completo</button>
             </div>
             <% } %>
         </section>
@@ -85,14 +87,14 @@
                         let productsHTML = '';
                         products.forEach(product => {
                             productsHTML += `
-                                <article class="product-card">
-                                    <img src="${product.foto}" alt="Foto de ${product.nombre_producto}">
-                                    <div class="card-content">
-                                        <h3>${product.nombre_producto}</h3>
-                                        <p>${product.descripcion}</p>
-                                        <div class="card-footer">
-                                            <span class="price">$${product.precio.toFixed(2)}</span>
-                                            <a href="#" class="order-button">Ordenar</a>
+                                <article class="bg-[#1a1a1a] rounded-xl overflow-hidden border-2 border-transparent hover:-translate-y-2 hover:border-[#FFC72C] transition transform flex flex-col">
+                                    <img src="${product.foto}" alt="Foto de ${product.nombre_producto}" class="w-full h-64 object-cover">
+                                    <div class="p-6 flex-1 flex flex-col">
+                                        <h3 class="text-2xl text-[#FFC72C] mb-2">${product.nombre_producto}</h3>
+                                        <p class="text-base leading-relaxed flex-1 mb-4">${product.descripcion}</p>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xl font-extrabold text-white">$${product.precio.toFixed(2)}</span>
+                                            <a href="#" class="bg-[#DA291C] text-white px-4 py-2 rounded-full font-extrabold hover:bg-[#a81f13]">Ordenar</a>
                                         </div>
                                     </div>
                                 </article>

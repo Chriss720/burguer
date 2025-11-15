@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos - Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+    <style> .font-oswald { font-family: 'Oswald', sans-serif; } </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-black text-white">
+
+<%- include('./header') %>
+
+        <div class="p-8">
+            <h2 class="text-4xl font-extrabold text-[#FFC72C] mb-8">Gestión de Pedidos</h2>
+
+            <div class="bg-[#1a1a1a] p-6 rounded-lg border-2 border-[#FFC72C] overflow-x-auto">
+                <table class="w-full">
+                    <thead class="border-b-2 border-[#FFC72C]">
+                        <tr>
+                            <th class="text-left py-2 text-[#FFC72C] font-bold">ID Pedido</th>
+                            <th class="text-left py-2 text-[#FFC72C] font-bold">Cliente</th>
+                            <th class="text-left py-2 text-[#FFC72C] font-bold">Estado</th>
+                            <th class="text-left py-2 text-[#FFC72C] font-bold">Fecha</th>
+                            <th class="text-left py-2 text-[#FFC72C] font-bold">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (orders && orders.length > 0) { %>
+                            <% orders.forEach(order => { %>
+                                <tr class="border-b border-gray-700 hover:bg-[#222] transition">
+                                    <td class="py-3">#<%= order.id_pedido %></td>
+                                    <td class="py-3"><%= order.customer ? (order.customer.nombre_cliente || 'N/A') : 'N/A' %></td>
+                                    <td class="py-3">
+                                        <span class="px-3 py-1 rounded-full text-sm font-bold
+                                            <% if (order.estado === 'completado') { %>
+                                                bg-green-900 text-green-200
+                                            <% } else if (order.estado === 'pendiente') { %>
+                                                bg-[#DA291C] text-white
+                                            <% } else { %>
+                                                bg-gray-700 text-gray-200
+                                            <% } %>
+                                        ">
+                                            <%= order.estado || 'Desconocido' %>
+                                        </span>
+                                    </td>
+                                    <td class="py-3"><%= new Date(order.fecha_pedido).toLocaleDateString() %></td>
+                                    <td class="py-3">
+                                        <button class="bg-[#FFC72C] text-black px-3 py-1 rounded font-bold hover:bg-[#FFB700]">Ver</button>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="5" class="text-center py-8 text-gray-400">No hay pedidos</td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+<%- include('./footer') %>
+
+</body>
+</html>

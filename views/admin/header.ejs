@@ -1,0 +1,26 @@
+<!-- Admin Header with sidebar nav -->
+<div class="flex h-screen bg-black text-white font-oswald">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-[#1a1a1a] border-r-4 border-[#FFC72C] p-6">
+        <h1 class="text-3xl font-extrabold text-[#FFC72C] mb-8">ADMIN</h1>
+        
+        <nav class="space-y-4">
+            <a href="/admin/dashboard" class="block px-4 py-2 rounded-lg bg-[#FFC72C] text-black font-bold hover:bg-[#FFB700]">Dashboard</a>
+            <a href="/admin/pedidos" class="block px-4 py-2 rounded-lg text-white hover:bg-[#333] transition">Pedidos</a>
+            <a href="/admin/menu" class="block px-4 py-2 rounded-lg text-white hover:bg-[#333] transition">Menú</a>
+            <a href="/admin/ingredientes" class="block px-4 py-2 rounded-lg text-white hover:bg-[#333] transition">Ingredientes</a>
+            <a href="/admin/empleados" class="block px-4 py-2 rounded-lg text-white hover:bg-[#333] transition">Empleados</a>
+        </nav>
+
+        <div class="mt-12 pt-6 border-t border-gray-700">
+            <p class="text-sm text-gray-400 mb-2">Sesión</p>
+            <div class="text-sm mb-4">
+                <p class="font-bold"><%= user.nombre %> <%= user.apellido %></p>
+                <p class="text-gray-400"><%= user.email %></p>
+            </div>
+            <button id="logout-admin" class="w-full bg-[#DA291C] text-white py-2 rounded-lg font-bold hover:bg-[#a81f13]">Cerrar sesión</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-auto">

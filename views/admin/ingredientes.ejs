@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingredientes - Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+    <style> .font-oswald { font-family: 'Oswald', sans-serif; } </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-black text-white">
+
+<%- include('./header') %>
+
+        <div class="p-8">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-4xl font-extrabold text-[#FFC72C]">Gestión de Ingredientes</h2>
+                <button id="add-ingredient-btn" class="bg-[#FFC72C] text-black px-6 py-2 rounded-lg font-bold hover:bg-[#FFB700]">+ Nuevo Ingrediente</button>
+            </div>
+
+            <div class="bg-[#1a1a1a] p-6 rounded-lg border-2 border-[#FFC72C]">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="border-b-2 border-[#FFC72C]">
+                            <tr>
+                                <th class="text-left py-2 text-[#FFC72C] font-bold">Nombre</th>
+                                <th class="text-left py-2 text-[#FFC72C] font-bold">Cantidad</th>
+                                <th class="text-left py-2 text-[#FFC72C] font-bold">Unidad</th>
+                                <th class="text-left py-2 text-[#FFC72C] font-bold">Estado</th>
+                                <th class="text-left py-2 text-[#FFC72C] font-bold">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-700 hover:bg-[#222] transition">
+                                <td class="py-3">Carne Premium</td>
+                                <td class="py-3">45 kg</td>
+                                <td class="py-3">Kilogramos</td>
+                                <td class="py-3"><span class="px-3 py-1 rounded-full bg-green-900 text-green-200 text-sm font-bold">En Stock</span></td>
+                                <td class="py-3">
+                                    <button class="bg-[#FFC72C] text-black px-3 py-1 rounded font-bold hover:bg-[#FFB700]">Editar</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-700 hover:bg-[#222] transition">
+                                <td class="py-3">Queso Americano</td>
+                                <td class="py-3">12 porciones</td>
+                                <td class="py-3">Paquetes</td>
+                                <td class="py-3"><span class="px-3 py-1 rounded-full bg-yellow-900 text-yellow-200 text-sm font-bold">Bajo Stock</span></td>
+                                <td class="py-3">
+                                    <button class="bg-[#FFC72C] text-black px-3 py-1 rounded font-bold hover:bg-[#FFB700]">Editar</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-700 hover:bg-[#222] transition">
+                                <td class="py-3">Lechuga</td>
+                                <td class="py-3">5 kg</td>
+                                <td class="py-3">Kilogramos</td>
+                                <td class="py-3"><span class="px-3 py-1 rounded-full bg-red-900 text-red-200 text-sm font-bold">Agotado</span></td>
+                                <td class="py-3">
+                                    <button class="bg-[#FFC72C] text-black px-3 py-1 rounded font-bold hover:bg-[#FFB700]">Editar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="mt-8 bg-[#1a1a1a] p-6 rounded-lg border-2 border-[#FFC72C]">
+                <h3 class="text-2xl font-bold text-[#FFC72C] mb-4">Alertas de Inventario</h3>
+                <div class="space-y-3">
+                    <div class="p-3 bg-red-900 rounded text-red-200">
+                        <strong>⚠️ Lechuga:</strong> Agotada - Reordenar urgentemente
+                    </div>
+                    <div class="p-3 bg-yellow-900 rounded text-yellow-200">
+                        <strong>⚠️ Queso Americano:</strong> Bajo stock - Solo 12 paquetes disponibles
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<%- include('./footer') %>
+
+</body>
+</html>
