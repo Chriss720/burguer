@@ -13,8 +13,8 @@ export class Order {
     @Column()
     id_cliente: number;
 
-    @Column()
-    id_empleado: number;
+    @Column({ nullable: true })
+    id_empleado: number | null;
 
     @CreateDateColumn()
     fecha_pedido: Date;
@@ -29,9 +29,9 @@ export class Order {
     @JoinColumn({ name: 'id_cliente' })
     customer: Customer;
 
-    @ManyToOne(() => Employee, employee => employee.orders)
+    @ManyToOne(() => Employee, employee => employee.orders, { nullable: true })
     @JoinColumn({ name: 'id_empleado' })
-    employee: Employee;
+    employee: Employee | null;
 
     @OneToMany(() => OrderProduct, orderProduct => orderProduct.order)
     orderProducts: OrderProduct[];

@@ -77,7 +77,15 @@
 
         // Guardar token en localStorage Y en cookie para que se envíe automáticamente
         localStorage.setItem('token', data.access_token);
-        localStorage.setItem('clienteActual', JSON.stringify(data.user));
+        localStorage.setItem('clienteActual', JSON.stringify({
+          usuario: data.user,
+          user: data.user,
+          id: data.user.id,
+          email: data.user.email,
+          nombre: data.user.nombre,
+          apellido: data.user.apellido,
+          tipo: data.user.tipo
+        }));
         
         // Guardar en cookie para que se envíe en todas las peticiones
         document.cookie = `Authorization=Bearer ${data.access_token}; path=/; max-age=86400`;

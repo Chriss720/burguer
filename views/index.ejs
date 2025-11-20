@@ -37,7 +37,7 @@
                             <p class="text-base leading-relaxed flex-1 mb-4"><%= product.descripcion %></p>
                             <div class="flex justify-between items-center">
                                 <span class="text-xl font-extrabold text-white">$<%= product.precio.toFixed(2) %></span>
-                                <a href="#" class="bg-[#DA291C] text-white px-4 py-2 rounded-full font-extrabold hover:bg-[#a81f13]">Ordenar</a>
+                                <a href="/carts/add/<%= product.id_producto %>" class="add-to-cart-btn bg-[#DA291C] text-white px-4 py-2 rounded-full font-extrabold hover:bg-[#a81f13]" data-product-id="<%= product.id_producto %>" data-product-name="<%= product.nombre_producto %>" data-product-price="<%= product.precio %>">Ordenar</a>
                             </div>
                         </div>
                     </article>
@@ -48,6 +48,36 @@
                 <button id="show-more-button" class="bg-[#FFC72C] text-black px-6 py-2 rounded-full font-bold">Mostrar menú completo</button>
             </div>
             <% } %>
+        </section>
+
+        <!-- Sección de Carrito y Pedidos del Cliente -->
+        <section id="cart-orders-section" class="py-16 px-8 hidden">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-4xl uppercase text-[#FFC72C] mb-8 font-bold">Mis Compras</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Carrito -->
+                    <div class="bg-[#1a1a1a] rounded-xl p-6 border-2 border-[#FFC72C]">
+                        <h3 class="text-2xl text-[#FFC72C] mb-4">Mi Carrito</h3>
+                        <div id="cart-items-section"></div>
+                        <button id="checkout-section-btn" class="w-full bg-[#DA291C] text-white py-3 rounded-full font-bold hover:bg-[#a81f13] mt-4">Procesar Pago</button>
+                    </div>
+                    <!-- Pedidos -->
+                    <div class="bg-[#1a1a1a] rounded-xl p-6 border-2 border-[#FFC72C]">
+                        <h3 class="text-2xl text-[#FFC72C] mb-4">Mis Pedidos</h3>
+                        <div id="orders-section"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mensaje de No Autenticado -->
+        <section id="not-logged-section" class="py-16 px-8">
+            <div class="max-w-2xl mx-auto bg-[#1a1a1a] rounded-xl p-12 text-center border-2 border-[#FFC72C]">
+                <svg viewBox="0 0 24 24" class="w-20 h-20 fill-[#FFC72C] mx-auto mb-4"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                <h2 class="text-3xl text-white mb-3 font-bold">¿Listo para ordenar?</h2>
+                <p class="text-lg text-gray-300 mb-6">Debes acceder a tu cuenta para ver tu carrito y tus pedidos. ¡Inicia sesión o crea una cuenta ahora!</p>
+                <a href="/acceder" class="inline-block bg-[#FFC72C] text-black px-8 py-3 rounded-full font-bold text-lg hover:bg-yellow-400">Acceder Ahora</a>
+            </div>
         </section>
 
         <section class="about-us-section">
@@ -78,6 +108,8 @@
             const productContainer = document.getElementById('product-container');
             const showMoreContainer = document.getElementById('show-more-container');
 
+            
+
             if (showMoreButton) {
                 showMoreButton.addEventListener('click', async () => {
                     try {
@@ -94,7 +126,7 @@
                                         <p class="text-base leading-relaxed flex-1 mb-4">${product.descripcion}</p>
                                         <div class="flex justify-between items-center">
                                             <span class="text-xl font-extrabold text-white">$${product.precio.toFixed(2)}</span>
-                                            <a href="#" class="bg-[#DA291C] text-white px-4 py-2 rounded-full font-extrabold hover:bg-[#a81f13]">Ordenar</a>
+                                            <button class="add-to-cart-btn bg-[#DA291C] text-white px-4 py-2 rounded-full font-extrabold hover:bg-[#a81f13]" data-product-id="${product.id_producto}" data-product-name="${product.nombre_producto}" data-product-price="${product.precio}">Ordenar</button>
                                         </div>
                                     </div>
                                 </article>
@@ -103,6 +135,9 @@
 
                         productContainer.innerHTML = productsHTML;
                         showMoreContainer.style.display = 'none';
+
+                        // Adjuntar listeners a los nuevos botones
+                        attachAddToCartListeners();
 
                     } catch (error) {
                         console.error('Error fetching full menu:', error);
@@ -121,40 +156,262 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuNombre = document.getElementById('menu-nombre');
   const menuCorreo = document.getElementById('menu-correo');
   const cerrarBtn = document.getElementById('cerrar-sesion');
+  
+  const carritoLink = document.getElementById('carrito-link');
+  const carritoMenu = document.getElementById('carrito-menu');
+  const carritoCount = document.getElementById('carrito-count');
+  const carritoItems = document.getElementById('carrito-items');
+  const checkoutBtn = document.getElementById('checkout-btn');
+  
+  const cartOrdersSection = document.getElementById('cart-orders-section');
+  const notLoggedSection = document.getElementById('not-logged-section');
+  const cartItemsSection = document.getElementById('cart-items-section');
+  const ordersSection = document.getElementById('orders-section');
+  const checkoutSectionBtn = document.getElementById('checkout-section-btn');
+
+  let token = localStorage.getItem('token');
+  let currentUser = null;
+
+  // Función para obtener el token del localStorage o cookies
+  function getToken() {
+    let t = localStorage.getItem('token') || '';
+    if (!t) {
+      const cookiePair = (document.cookie.split(';').find(c => c.trim().startsWith('Authorization=')) || '');
+      t = cookiePair ? cookiePair.split('=')[1] : '';
+    }
+    if (!t) return null;
+    // strip possible leading 'Bearer '
+    if (t.startsWith('Bearer ')) t = t.replace('Bearer ', '');
+    return t;
+  }
+
+  // Función para actualizar el contador del carrito (expuesta globalmente)
+  window.updateCartCount = async function() {
+    try {
+      const token = getToken();
+      if (!token) return;
+
+      const response = await fetch('/carts/me', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      if (response.ok) {
+        const carts = await response.json();
+        const cart = carts[0];
+        
+        if (cart && cart.cartProducts) {
+          carritoCount.textContent = cart.cartProducts.length;
+        }
+      }
+    } catch (error) {
+      console.error('Error actualizando contador:', error);
+    }
+  };
+
+  // Función para cargar carrito
+  async function loadCart() {
+    try {
+      const token = getToken();
+      if (!token) return;
+
+      const response = await fetch('/carts/me', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      if (response.ok) {
+        const carts = await response.json();
+        const cart = carts[0];
+        
+        if (cart && cart.cartProducts) {
+          carritoCount.textContent = cart.cartProducts.length;
+          
+          let itemsHTML = '';
+          let total = 0;
+          
+          cart.cartProducts.forEach(item => {
+            const price = parseFloat(item.product?.precio || 0);
+            const subtotal = price * item.cantidad;
+            total += subtotal;
+            
+            itemsHTML += `
+              <div class="bg-gray-800 p-3 rounded mb-2 flex justify-between items-center">
+                <div>
+                  <p class="font-bold">${item.product?.nombre_producto || 'Producto'}</p>
+                  <p class="text-sm text-gray-300">Cantidad: ${item.cantidad}</p>
+                </div>
+                <p class="text-[#FFC72C] font-bold">$${subtotal.toFixed(2)}</p>
+              </div>
+            `;
+          });
+          
+          itemsHTML += `<div class="border-t border-gray-700 pt-2 mt-2 font-bold text-[#FFC72C]">Total: $${total.toFixed(2)}</div>`;
+          carritoItems.innerHTML = itemsHTML;
+
+          let cartSectionHTML = '';
+          if (cart.cartProducts.length === 0) {
+            cartSectionHTML = '<p class="text-gray-300">Tu carrito está vacío</p>';
+          } else {
+            cart.cartProducts.forEach(item => {
+              const price = parseFloat(item.product?.precio || 0);
+              const subtotal = price * item.cantidad;
+              
+              cartSectionHTML += `
+                <div class="bg-gray-800 p-4 rounded mb-3 border-l-4 border-[#FFC72C]">
+                  <p class="font-bold text-white">${item.product?.nombre_producto || 'Producto'}</p>
+                  <p class="text-sm text-gray-300">Cantidad: ${item.cantidad}</p>
+                  <p class="text-lg font-bold text-[#FFC72C] mt-2">$${subtotal.toFixed(2)}</p>
+                </div>
+              `;
+            });
+            cartSectionHTML += `<div class="bg-gray-900 p-3 rounded font-bold text-[#FFC72C]">Total: $${cart.cartProducts.reduce((sum, item) => sum + (parseFloat(item.product?.precio || 0) * item.cantidad), 0).toFixed(2)}</div>`;
+          }
+          cartItemsSection.innerHTML = cartSectionHTML;
+        }
+      }
+    } catch (error) {
+      console.error('Error cargando carrito:', error);
+    }
+  }
+
+  // Función para cargar pedidos
+  async function loadOrders() {
+    try {
+      const token = getToken();
+      if (!token) return;
+
+      const response = await fetch('/orders/customer/' + currentUser.id, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      if (response.ok) {
+        const orders = await response.json();
+        
+        if (orders.length === 0) {
+          ordersSection.innerHTML = '<p class="text-gray-300">No tienes pedidos aún</p>';
+          return;
+        }
+        
+        let ordersHTML = '';
+        orders.forEach(order => {
+          ordersHTML += `
+            <div class="bg-gray-800 p-4 rounded mb-3 border-l-4 border-[#FFC72C]">
+              <p class="font-bold text-white">Pedido #${order.id_pedido}</p>
+              <p class="text-sm text-gray-300">Fecha: ${new Date(order.fecha_pedido).toLocaleDateString()}</p>
+              <p class="text-sm text-gray-300">Estado: <span class="text-[#FFC72C]">${order.estado}</span></p>
+              <p class="text-lg font-bold text-white mt-2">Total: $${order.total.toFixed(2)}</p>
+            </div>
+          `;
+        });
+        
+        ordersSection.innerHTML = ordersHTML;
+      }
+    } catch (error) {
+      console.error('Error cargando pedidos:', error);
+    }
+  }
 
   if (usuarioData) {
-  const data = JSON.parse(usuarioData);
-  const user = data.cliente || data;
+    const data = JSON.parse(usuarioData);
+    currentUser = data.usuario || data.user || data;
+    const nombre = currentUser.nombre || currentUser.nombre_cliente || "Usuario";
+    const apellido = currentUser.apellido || currentUser.apellido_cliente || "";
+    const correo = currentUser.email || currentUser.correo_cliente || "Correo no disponible";
 
-  const nombre = user.nombre || "Usuario";
-  const apellido = user.apellido || "";
-  const correo = user.email || "Correo no disponible";
+    nombreSpan.textContent = nombre;
+    menuNombre.textContent = `${nombre} ${apellido}`.trim();
+    menuCorreo.textContent = correo;
 
-  nombreSpan.textContent = nombre;
-  menuNombre.textContent = `${nombre} ${apellido}`.trim();
-  menuCorreo.textContent = correo;
+    // Mostrar sección de carrito y pedidos
+    cartOrdersSection.classList.remove('hidden');
+    notLoggedSection.classList.add('hidden');
+    
+    // Cargar datos
+    loadCart();
+    loadOrders();
 
-  // Mostrar menú
-  userLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    menu.classList.toggle('hidden');
-  });
+    // Click en icono de carrito
+    carritoLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      carritoMenu.classList.toggle('hidden');
+      loadCart();
+    });
 
-  // Cerrar sesión
-  cerrarBtn.addEventListener('click', () => {
-    localStorage.removeItem('clienteActual');
-    location.reload();
-  });
+    // Click en botón de checkout
+    const performCheckout = async () => {
+      try {
+        const token = getToken();
+        if (!token) {
+          alert('Por favor inicia sesión para continuar.');
+          window.location.href = '/acceder';
+          return;
+        }
 
-  // Cerrar si hace clic fuera
-  document.addEventListener('click', (e) => {
-    if (!menu.contains(e.target) && !userLink.contains(e.target)) {
-      menu.classList.add('hidden');
-    }
-  });
-} else {
+        const cartResp = await fetch('/carts/me', { headers: { 'Authorization': `Bearer ${token}` } });
+        if (!cartResp.ok) {
+          if (cartResp.status === 401) {
+            alert('Tu sesión expiró. Por favor inicia sesión de nuevo.');
+            window.location.href = '/acceder';
+            return;
+          }
+          alert('Error al obtener el carrito para el checkout');
+          return;
+        }
+
+        const carts = await cartResp.json();
+        if (carts && carts[0]) {
+          const checkoutResp = await fetch(`/carts/${carts[0].id_carrito}/checkout`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+
+          if (!checkoutResp.ok) {
+            alert('Error al procesar el checkout');
+            return;
+          }
+
+          await checkoutResp.json();
+          alert('¡Pago procesado! Tu pedido ha sido creado.');
+          carritoMenu.classList.add('hidden');
+          loadCart();
+          loadOrders();
+          window.updateCartCount();
+        }
+      } catch (error) {
+        console.error('Error en checkout:', error);
+        alert('Error al procesar el pago');
+      }
+    };
+
+    checkoutBtn.addEventListener('click', performCheckout);
+    checkoutSectionBtn.addEventListener('click', performCheckout);
+
+    // Mostrar menú de usuario
+    userLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      menu.classList.toggle('hidden');
+    });
+
+    // Cerrar sesión
+    cerrarBtn.addEventListener('click', () => {
+      localStorage.removeItem('clienteActual');
+      localStorage.removeItem('token');
+      location.reload();
+    });
+
+    // Cerrar menús si hace clic fuera
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target) && !userLink.contains(e.target)) {
+        menu.classList.add('hidden');
+      }
+      if (!carritoMenu.contains(e.target) && !carritoLink.contains(e.target)) {
+        carritoMenu.classList.add('hidden');
+      }
+    });
+  } else {
     nombreSpan.textContent = "Acceder";
     userLink.setAttribute('href', '/acceder');
+    cartOrdersSection.classList.add('hidden');
+    notLoggedSection.classList.remove('hidden');
   }
 });
 </script>
