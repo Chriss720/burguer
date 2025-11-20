@@ -13,5 +13,6 @@ import { Product } from '../product/entities/product.entity';
   imports: [TypeOrmModule.forFeature([Order, OrderProduct, Cart, CartProduct, Product])],
   controllers: [OrderController],
   providers: [OrderService],
+  exports: [OrderService],
 })
 export class OrderModule { }

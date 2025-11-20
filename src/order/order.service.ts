@@ -56,7 +56,7 @@ export class OrderService {
     const cart = await this.cartRepository.findOne({ where: { id_carrito: cartId }, relations: ['cartProducts', 'cartProducts.product'] });
     if (!cart) throw new NotFoundException(`Cart with ID ${cartId} not found`);
 
-    const order = this.orderRepository.create({ id_cliente: cart.id_cliente, id_empleado: employeeId, total: 0, estado: 'Pendiente' } as Partial<Order>);
+    const order = this.orderRepository.create({id_cliente: cart.id_cliente, id_empleado: employeeId || null,total: 0,estado: 'Pendiente',} as Partial<Order>);
     const savedOrder = await this.orderRepository.save(order);
 
     let total = 0;

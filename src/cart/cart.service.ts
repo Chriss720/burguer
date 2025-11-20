@@ -8,6 +8,7 @@ import { Cart } from './entities/cart.entity';
 import { CartProduct } from './entities/cart-product.entity';
 import { Product } from '../product/entities/product.entity';
 import { AddProductDto } from './dto/add-product.dto';
+import { OrderService } from '../order/order.service';
 
 @Injectable()
 export class CartService {
@@ -18,6 +19,7 @@ export class CartService {
     private readonly cartProductRepository: Repository<CartProduct>,
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
+    private readonly orderService: OrderService,
   ) { }
 
   async create(createCartDto: CreateCartDto): Promise<Cart> {
@@ -30,6 +32,14 @@ export class CartService {
   }
 
   async findOne(id: number): Promise<Cart> {
+    console.log('cartService.findOne called with id:', id);
+    if (isNaN(id)) {
+      try {
+        throw new Error('findOne called with NaN');
+      } catch (e) {
+        console.error(e.stack);
+      }
+    }
     const cart = await this.cartRepository.findOne({ where: { id_carrito: id }, relations: ['cartProducts', 'cartProducts.product'] });
     if (!cart) throw new NotFoundException(`Cart with ID ${id} not found`);
     return cart;
@@ -77,5 +87,25 @@ export class CartService {
 
   async findByCustomer(customerId: number): Promise<Cart[]> {
     return this.cartRepository.find({ where: { id_cliente: customerId }, relations: ['cartProducts', 'cartProducts.product'] });
+  }
+
+  async getOrCreateCart(customerId: number): Promise<Cart> {
+    let cart = await this.cartRepository.findOne({
+      where: { id_cliente: customerId, estado: 'activo' },
+    });
+
+    if (!cart) {
+      cart = this.cartRepository.create({
+        id_cliente: customerId,
+        estado: 'activo'
+      } as Partial<Cart>);
+      cart = await this.cartRepository.save(cart);
+    }
+
+    return cart;
+  }
+
+  async checkout(cartId: number, employeeId?: number) {
+    return this.orderService.fromCart(cartId, employeeId ?? 1);
   }
 }
